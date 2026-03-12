@@ -79,7 +79,7 @@ function TreatmentCard({
         </div>
       </div>
       {treatmentAllocs.length > 0 ? (
-        <table className="candidates-subtable">
+        <table className="candidates-subtable treatment-alloc-table">
           <thead>
             <tr>
               <th>Line</th>
@@ -101,7 +101,7 @@ function TreatmentCard({
               );
             })}
             <tr className="alloc-summary-row">
-              <td colSpan={3} style={{ textAlign: "right", color: "#888" }}>Total</td>
+              <td colSpan={3}>Total</td>
               <td><strong>{totalAllocated}</strong></td>
             </tr>
           </tbody>

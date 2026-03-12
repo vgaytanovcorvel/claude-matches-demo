@@ -329,7 +329,7 @@ tr:hover {
 
 .edit-input-inline {
   width: 5.5rem;
-  display: inline;
+  display: inline-block;
 }
 
 .no-allocs {
@@ -343,6 +343,17 @@ tr:hover {
   border-top: 1px solid #333;
   font-size: 0.8rem;
 }
+
+/* Treatment sub-table column alignment */
+.treatment-alloc-table th:nth-child(1),
+.treatment-alloc-table td:nth-child(1) { width: 30%; }
+.treatment-alloc-table th:nth-child(2),
+.treatment-alloc-table td:nth-child(2) { width: 20%; }
+.treatment-alloc-table th:nth-child(3),
+.treatment-alloc-table td:nth-child(3) { width: 30%; }
+.treatment-alloc-table th:nth-child(4),
+.treatment-alloc-table td:nth-child(4) { width: 20%; text-align: right; }
+.treatment-alloc-table .alloc-summary-row td { text-align: right; }
 
 /* Available units emphasis */
 .avail-highlight {
