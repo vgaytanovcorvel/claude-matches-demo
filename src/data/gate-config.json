@@ -1,0 +1,33 @@
+[
+  {
+    "gate_id": "provider",
+    "bill_field": "provider_id",
+    "auth_field": "provider_id",
+    "mode": "required",
+    "weight": 1.0,
+    "rules": [
+      { "rule_id": "provider_exact", "priority": 1, "type": "exact" }
+    ]
+  },
+  {
+    "gate_id": "cpt",
+    "bill_field": "cpt",
+    "auth_field": "cpt",
+    "mode": "required",
+    "weight": 3.0,
+    "rules": [
+      { "rule_id": "cpt_exact", "priority": 2, "type": "exact" },
+      { "rule_id": "cpt_family", "priority": 1, "type": "prefix", "params": { "min_length": 3 } }
+    ]
+  },
+  {
+    "gate_id": "dos",
+    "bill_field": "dos",
+    "auth_field": "start_date,end_date",
+    "mode": "optional",
+    "weight": 2.0,
+    "rules": [
+      { "rule_id": "dos_in_range", "priority": 1, "type": "date_in_range", "params": { "decay_per_day": 0.02, "max_days": 30 } }
+    ]
+  }
+]

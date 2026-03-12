@@ -1,0 +1,58 @@
+[
+  {
+    "line_id": "charge_01",
+    "provider_id": "prov_100",
+    "cpt": "99213",
+    "units": 3,
+    "dos": "2026-02-10"
+  },
+  {
+    "line_id": "charge_02",
+    "provider_id": "prov_100",
+    "cpt": "99213",
+    "units": 2,
+    "dos": "2026-03-15"
+  },
+  {
+    "line_id": "charge_03",
+    "provider_id": "prov_100",
+    "cpt": "99214",
+    "units": 3,
+    "dos": "2026-02-20"
+  },
+  {
+    "line_id": "charge_04",
+    "provider_id": "prov_200",
+    "cpt": "97110",
+    "units": 4,
+    "dos": "2026-03-01"
+  },
+  {
+    "line_id": "charge_05",
+    "provider_id": "prov_200",
+    "cpt": "97110",
+    "units": 5,
+    "dos": "2026-03-18"
+  },
+  {
+    "line_id": "charge_06",
+    "provider_id": "prov_200",
+    "cpt": "97140",
+    "units": 4,
+    "dos": "2026-03-10"
+  },
+  {
+    "line_id": "charge_07",
+    "provider_id": "prov_300",
+    "cpt": "99213",
+    "units": 5,
+    "dos": "2026-04-05"
+  },
+  {
+    "line_id": "charge_08",
+    "provider_id": "prov_100",
+    "cpt": "99215",
+    "units": 2,
+    "dos": "2026-04-12"
+  }
+]

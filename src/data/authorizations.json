@@ -1,0 +1,42 @@
+[
+  {
+    "auth_id": "auth_01",
+    "provider_id": "prov_100",
+    "cpt": "99213",
+    "units_authorized": 8,
+    "start_date": "2026-01-01",
+    "end_date": "2026-06-30"
+  },
+  {
+    "auth_id": "auth_02",
+    "provider_id": "prov_100",
+    "cpt": "99214",
+    "units_authorized": 4,
+    "start_date": "2026-01-01",
+    "end_date": "2026-06-30"
+  },
+  {
+    "auth_id": "auth_03",
+    "provider_id": "prov_200",
+    "cpt": "97110",
+    "units_authorized": 12,
+    "start_date": "2026-02-01",
+    "end_date": "2026-04-30"
+  },
+  {
+    "auth_id": "auth_04",
+    "provider_id": "prov_200",
+    "cpt": "97140",
+    "units_authorized": 6,
+    "start_date": "2026-02-01",
+    "end_date": "2026-04-30"
+  },
+  {
+    "auth_id": "auth_05",
+    "provider_id": "prov_300",
+    "cpt": "99213",
+    "units_authorized": 10,
+    "start_date": "2026-03-01",
+    "end_date": "2026-08-31"
+  }
+]

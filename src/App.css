@@ -1,0 +1,326 @@
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+}
+
+.app h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #333;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: -2px;
+  border-radius: 0;
+}
+
+.tab:hover {
+  border-bottom-color: #555;
+}
+
+.tab.active {
+  border-bottom-color: #646cff;
+  color: #646cff;
+}
+
+.badge {
+  margin-left: 0.4rem;
+  background: #646cff;
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Tables */
+.panel {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #333;
+  white-space: nowrap;
+}
+
+th {
+  font-weight: 600;
+  color: #999;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tr:hover {
+  background: rgba(100, 108, 255, 0.06);
+}
+
+/* Score styling */
+.score {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.score-high { color: #4ade80; }
+.score-mid  { color: #facc15; }
+.score-low  { color: #f87171; }
+
+/* Status badges */
+.status {
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-pending  { background: #333; color: #ccc; }
+.status-approved { background: #166534; color: #4ade80; }
+.status-rejected { background: #7f1d1d; color: #f87171; }
+
+/* Action buttons in tables */
+.btn {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #1a1a1a;
+  color: inherit;
+  cursor: pointer;
+}
+
+.btn:hover {
+  border-color: #646cff;
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  border-color: #333;
+}
+
+.btn-approve {
+  border-color: #166534;
+  color: #4ade80;
+}
+.btn-approve:hover { background: #166534; color: #fff; }
+
+.btn-reject {
+  border-color: #7f1d1d;
+  color: #f87171;
+}
+.btn-reject:hover { background: #7f1d1d; color: #fff; }
+
+.btn-delete {
+  border-color: #555;
+  color: #aaa;
+}
+.btn-delete:hover { background: #444; color: #fff; }
+
+/* Units input */
+.units-input {
+  width: 3.5rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.85rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #1a1a1a;
+  color: inherit;
+  text-align: center;
+}
+
+.avail-info {
+  font-size: 0.75rem;
+  color: #888;
+  font-family: monospace;
+}
+
+.actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+/* Gate config */
+.gate-mode {
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.gate-required { background: #7f1d1d; color: #f87171; }
+.gate-optional { background: #1e3a5f; color: #60a5fa; }
+
+.rule-list {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.rule-tag {
+  background: #333;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-family: monospace;
+}
+
+/* Vector breakdown */
+.vector-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.vector-label {
+  font-size: 0.7rem;
+  color: #888;
+  min-width: 3rem;
+}
+
+.vector-fill-bg {
+  width: 50px;
+  height: 6px;
+  background: #333;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.vector-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.vector-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+/* Line-centric candidates */
+.candidates-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.line-group {
+  border: 1px solid #333;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.line-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: #1a1a1a;
+  cursor: pointer;
+  user-select: none;
+}
+
+.line-header:hover {
+  background: #222;
+}
+
+.expand-icon {
+  font-size: 0.7rem;
+  color: #888;
+  width: 1rem;
+  flex-shrink: 0;
+}
+
+.line-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.line-id {
+  font-weight: 600;
+  font-family: monospace;
+  color: #60a5fa;
+}
+
+.auth-id {
+  font-weight: 600;
+  font-family: monospace;
+  color: #c084fc;
+}
+
+.detail-field {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.detail-field strong {
+  color: inherit;
+  font-weight: 600;
+  color: #ccc;
+}
+
+.candidate-count {
+  font-size: 0.75rem;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.candidates-subtable {
+  margin: 0;
+}
+
+.candidates-subtable th {
+  background: #111;
+}
+
+.auth-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* Light mode */
+@media (prefers-color-scheme: light) {
+  th, td { border-bottom-color: #e0e0e0; }
+  .tabs { border-bottom-color: #e0e0e0; }
+  .tab:hover { border-bottom-color: #aaa; }
+  .status-pending { background: #e5e5e5; color: #555; }
+  .rule-tag { background: #e5e5e5; }
+  .vector-fill-bg { background: #e0e0e0; }
+  .btn { background: #f9f9f9; border-color: #ccc; }
+  .units-input { background: #fff; border-color: #ccc; }
+  tr:hover { background: rgba(100, 108, 255, 0.04); }
+  .line-group { border-color: #ddd; }
+  .line-header { background: #f5f5f5; }
+  .line-header:hover { background: #eee; }
+  .candidates-subtable th { background: #fafafa; }
+  .line-id { color: #2563eb; }
+  .auth-id { color: #7c3aed; }
+  .detail-field strong { color: #333; }
+}
