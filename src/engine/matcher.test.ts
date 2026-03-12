@@ -1,15 +1,15 @@
 import { describe, it, expect } from "vitest";
 import { generateCandidates, evaluatePair } from "./matcher.ts";
 import type {
-  Authorization,
+  Treatment,
   ChargeLine,
   GateConfig,
 } from "../types/models.ts";
-import authorizations from "../data/authorizations.json";
+import treatments from "../data/treatments.json";
 import chargeLines from "../data/charge-lines.json";
 import gateConfig from "../data/gate-config.json";
 
-const auths = authorizations as Authorization[];
+const treatmentData = treatments as Treatment[];
 const lines = chargeLines as ChargeLine[];
 const gates = gateConfig as GateConfig[];
 
@@ -22,15 +22,15 @@ describe("gate engine", () => {
       units: 2,
       dos: "2026-02-10",
     };
-    const auth: Authorization = {
-      auth_id: "a1",
+    const treatment: Treatment = {
+      treatment_id: "a1",
       provider_id: "prov_100",
       cpt: "99213",
-      units_authorized: 8,
+      units_approved: 8,
       start_date: "2026-01-01",
       end_date: "2026-06-30",
     };
-    const candidate = evaluatePair(line, auth, gates);
+    const candidate = evaluatePair(line, treatment, gates);
     expect(candidate).not.toBeNull();
     expect(candidate!.composite_score).toBe(1.0);
     expect(candidate!.vector.provider).toBe(1.0);
@@ -46,15 +46,15 @@ describe("gate engine", () => {
       units: 1,
       dos: "2026-02-10",
     };
-    const auth: Authorization = {
-      auth_id: "a1",
+    const treatment: Treatment = {
+      treatment_id: "a1",
       provider_id: "prov_100",
       cpt: "99213",
-      units_authorized: 8,
+      units_approved: 8,
       start_date: "2026-01-01",
       end_date: "2026-06-30",
     };
-    const candidate = evaluatePair(line, auth, gates);
+    const candidate = evaluatePair(line, treatment, gates);
     expect(candidate).not.toBeNull();
     expect(candidate!.vector.provider).toBe(0);
     expect(candidate!.composite_score).toBeLessThan(1.0);
@@ -68,15 +68,15 @@ describe("gate engine", () => {
       units: 1,
       dos: "2026-02-10",
     };
-    const auth: Authorization = {
-      auth_id: "a1",
+    const treatment: Treatment = {
+      treatment_id: "a1",
       provider_id: "prov_100",
       cpt: "99213",
-      units_authorized: 8,
+      units_approved: 8,
       start_date: "2026-01-01",
       end_date: "2026-06-30",
     };
-    const candidate = evaluatePair(line, auth, gates);
+    const candidate = evaluatePair(line, treatment, gates);
     expect(candidate).toBeNull();
   });
 
@@ -88,22 +88,22 @@ describe("gate engine", () => {
       units: 1,
       dos: "2026-03-01",
     };
-    const auth: Authorization = {
-      auth_id: "a2",
+    const treatment: Treatment = {
+      treatment_id: "a2",
       provider_id: "prov_100",
       cpt: "99214",
-      units_authorized: 4,
+      units_approved: 4,
       start_date: "2026-01-01",
       end_date: "2026-06-30",
     };
-    const candidate = evaluatePair(line, auth, gates);
+    const candidate = evaluatePair(line, treatment, gates);
     expect(candidate).not.toBeNull();
     expect(candidate!.vector.cpt).toBeGreaterThan(0);
     expect(candidate!.vector.cpt).toBeLessThan(1.0);
     expect(candidate!.composite_score).toBeLessThan(1.0);
   });
 
-  it("DOS outside auth window → reduced dos score", () => {
+  it("DOS outside treatment window → reduced dos score", () => {
     const line: ChargeLine = {
       line_id: "t4",
       provider_id: "prov_200",
@@ -111,22 +111,22 @@ describe("gate engine", () => {
       units: 2,
       dos: "2026-05-15", // 15 days past end_date 2026-04-30
     };
-    const auth: Authorization = {
-      auth_id: "a3",
+    const treatment: Treatment = {
+      treatment_id: "a3",
       provider_id: "prov_200",
       cpt: "97110",
-      units_authorized: 12,
+      units_approved: 12,
       start_date: "2026-02-01",
       end_date: "2026-04-30",
     };
-    const candidate = evaluatePair(line, auth, gates);
+    const candidate = evaluatePair(line, treatment, gates);
     expect(candidate).not.toBeNull();
     expect(candidate!.vector.dos).toBeLessThan(1.0);
     expect(candidate!.vector.dos).toBeCloseTo(1.0 - 15 * 0.02, 2); // 0.70
   });
 
   it("generates candidates from mock data", () => {
-    const candidates = generateCandidates(lines, auths, gates);
+    const candidates = generateCandidates(lines, treatmentData, gates);
     expect(candidates.length).toBeGreaterThan(0);
     // sorted descending
     for (let i = 1; i < candidates.length; i++) {
@@ -145,15 +145,15 @@ describe("gate engine", () => {
       units: 1,
       dos: "", // empty = missing
     };
-    const auth: Authorization = {
-      auth_id: "a1",
+    const treatment: Treatment = {
+      treatment_id: "a1",
       provider_id: "prov_100",
       cpt: "99213",
-      units_authorized: 8,
+      units_approved: 8,
       start_date: "2026-01-01",
       end_date: "2026-06-30",
     };
-    const candidate = evaluatePair(line, auth, gates);
+    const candidate = evaluatePair(line, treatment, gates);
     expect(candidate).not.toBeNull();
     // Only provider + cpt active, both exact → 1.0
     expect(candidate!.composite_score).toBe(1.0);

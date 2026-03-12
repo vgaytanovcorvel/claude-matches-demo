@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import type {
   Allocation,
-  Authorization,
+  Treatment,
   ChargeLine,
   MatchCandidate,
 } from "../types/models.ts";
@@ -10,30 +10,30 @@ import { ScoreCell, VectorCell } from "./ScoreCell.tsx";
 interface Props {
   candidates: MatchCandidate[];
   lines: ChargeLine[];
-  auths: Authorization[];
+  treatments: Treatment[];
   allocations: Allocation[];
   lineRemaining: (lineId: string) => number;
-  authRemaining: (authId: string) => number;
+  treatmentRemaining: (treatmentId: string) => number;
   onAllocate: (candidate: MatchCandidate, units: number) => void;
 }
 
 function CandidateRow({
   candidate,
-  auth,
+  treatment,
   lineAvail,
-  authAvail,
+  treatmentAvail,
   allocatedUnits,
   onAllocate,
 }: {
   candidate: MatchCandidate;
-  auth: Authorization;
+  treatment: Treatment;
   lineAvail: number;
-  authAvail: number;
+  treatmentAvail: number;
   allocatedUnits: number | null;
   onAllocate: (candidate: MatchCandidate, units: number) => void;
 }) {
   const hasAllocation = allocatedUnits !== null;
-  const maxUnits = Math.min(lineAvail, authAvail);
+  const maxUnits = Math.min(lineAvail, treatmentAvail);
   const [units, setUnits] = useState(maxUnits);
 
   useEffect(() => {
@@ -52,16 +52,16 @@ function CandidateRow({
         <VectorCell vector={candidate.vector} />
       </td>
       <td>
-        <div className="auth-detail">
-          <span className="auth-id">{auth.auth_id}</span>
+        <div className="treatment-detail">
+          <span className="treatment-id">{treatment.treatment_id}</span>
           <span className="detail-field">
-            CPT <strong>{auth.cpt}</strong>
+            CPT <strong>{treatment.cpt}</strong>
           </span>
           <span className="detail-field">
-            {auth.units_authorized}u (<strong className="avail-highlight">{authAvail} avail</strong>)
+            {treatment.units_approved}u (<strong className="avail-highlight">{treatmentAvail} avail</strong>)
           </span>
           <span className="detail-field">
-            {auth.start_date} to {auth.end_date}
+            {treatment.start_date} to {treatment.end_date}
           </span>
         </div>
       </td>
@@ -101,18 +101,18 @@ function CandidateRow({
 function LineGroup({
   line,
   candidates,
-  auths,
+  treatments,
   allocations,
   lineRemaining,
-  authRemaining,
+  treatmentRemaining,
   onAllocate,
 }: {
   line: ChargeLine;
   candidates: MatchCandidate[];
-  auths: Authorization[];
+  treatments: Treatment[];
   allocations: Allocation[];
   lineRemaining: (lineId: string) => number;
-  authRemaining: (authId: string) => number;
+  treatmentRemaining: (treatmentId: string) => number;
   onAllocate: (candidate: MatchCandidate, units: number) => void;
 }) {
   const [expanded, setExpanded] = useState(true);
@@ -121,11 +121,11 @@ function LineGroup({
     for (const a of allocations) m.set(a.candidate_id, a.units_allocated);
     return m;
   }, [allocations]);
-  const authMap = useMemo(() => {
-    const m = new Map<string, Authorization>();
-    for (const a of auths) m.set(a.auth_id, a);
+  const treatmentMap = useMemo(() => {
+    const m = new Map<string, Treatment>();
+    for (const a of treatments) m.set(a.treatment_id, a);
     return m;
-  }, [auths]);
+  }, [treatments]);
 
   const lineAvail = lineRemaining(line.line_id);
 
@@ -164,15 +164,15 @@ function LineGroup({
           </thead>
           <tbody>
             {candidates.map((c) => {
-              const auth = authMap.get(c.auth_id);
-              if (!auth) return null;
+              const treatment = treatmentMap.get(c.treatment_id);
+              if (!treatment) return null;
               return (
                 <CandidateRow
                   key={c.candidate_id}
                   candidate={c}
-                  auth={auth}
+                  treatment={treatment}
                   lineAvail={lineAvail}
-                  authAvail={authRemaining(c.auth_id)}
+                  treatmentAvail={treatmentRemaining(c.treatment_id)}
                   allocatedUnits={allocMap.get(c.candidate_id) ?? null}
                   onAllocate={onAllocate}
                 />
@@ -188,10 +188,10 @@ function LineGroup({
 export function CandidatesTable({
   candidates,
   lines,
-  auths,
+  treatments,
   allocations,
   lineRemaining,
-  authRemaining,
+  treatmentRemaining,
   onAllocate,
 }: Props) {
   const grouped = useMemo(() => {
@@ -213,10 +213,10 @@ export function CandidatesTable({
             key={line.line_id}
             line={line}
             candidates={lineCandidates}
-            auths={auths}
+            treatments={treatments}
             allocations={allocations}
             lineRemaining={lineRemaining}
-            authRemaining={authRemaining}
+            treatmentRemaining={treatmentRemaining}
             onAllocate={onAllocate}
           />
         );

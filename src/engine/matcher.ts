@@ -1,5 +1,5 @@
 import type {
-  Authorization,
+  Treatment,
   ChargeLine,
   GateConfig,
   GateResult,
@@ -48,11 +48,11 @@ function computeComposite(
 
 export function evaluatePair(
   line: ChargeLine,
-  auth: Authorization,
+  treatment: Treatment,
   gates: GateConfig[]
 ): MatchCandidate | null {
   const gateResults: GateResult[] = gates.map((gate) =>
-    evaluateGate(gate, line, auth)
+    evaluateGate(gate, line, treatment)
   );
 
   const composite = computeComposite(gateResults, gates);
@@ -68,7 +68,7 @@ export function evaluatePair(
   return {
     candidate_id: nextCandidateId(),
     line_id: line.line_id,
-    auth_id: auth.auth_id,
+    treatment_id: treatment.treatment_id,
     vector,
     gate_details: gateResults,
     composite_score: Math.round(composite * 1000) / 1000,
@@ -78,15 +78,15 @@ export function evaluatePair(
 
 export function generateCandidates(
   lines: ChargeLine[],
-  auths: Authorization[],
+  treatments: Treatment[],
   gates: GateConfig[]
 ): MatchCandidate[] {
   resetCandidateCounter();
   const candidates: MatchCandidate[] = [];
 
   for (const line of lines) {
-    for (const auth of auths) {
-      const candidate = evaluatePair(line, auth, gates);
+    for (const treatment of treatments) {
+      const candidate = evaluatePair(line, treatment, gates);
       if (candidate) {
         candidates.push(candidate);
       }

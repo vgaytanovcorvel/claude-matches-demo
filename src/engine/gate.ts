@@ -1,7 +1,7 @@
 import type {
   GateConfig,
   GateResult,
-  Authorization,
+  Treatment,
   ChargeLine,
 } from "../types/models.ts";
 import { executeRule } from "./rules.ts";
@@ -24,19 +24,19 @@ function extractValue(
 export function evaluateGate(
   gate: GateConfig,
   line: ChargeLine,
-  auth: Authorization
+  treatment: Treatment
 ): GateResult {
   const billValue = extractValue(
     line as unknown as Record<string, unknown>,
     gate.bill_field
   );
-  const authValue = extractValue(
-    auth as unknown as Record<string, unknown>,
-    gate.auth_field
+  const treatmentValue = extractValue(
+    treatment as unknown as Record<string, unknown>,
+    gate.treatment_field
   );
 
   // Presence check
-  if (billValue == null || authValue == null) {
+  if (billValue == null || treatmentValue == null) {
     return {
       gate_id: gate.gate_id,
       present: false,
@@ -48,7 +48,7 @@ export function evaluateGate(
   // Run rules in priority order (descending)
   const sorted = [...gate.rules].sort((a, b) => b.priority - a.priority);
   for (const rule of sorted) {
-    const result = executeRule(rule, billValue, authValue);
+    const result = executeRule(rule, billValue, treatmentValue);
     if (result.matched) {
       return {
         gate_id: gate.gate_id,

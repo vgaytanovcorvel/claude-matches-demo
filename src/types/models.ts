@@ -1,10 +1,10 @@
 // --- Domain entities ---
 
-export interface Authorization {
-  auth_id: string;
+export interface Treatment {
+  treatment_id: string;
   provider_id: string;
   cpt: string;
-  units_authorized: number;
+  units_approved: number;
   start_date: string; // ISO date
   end_date: string;
 }
@@ -38,7 +38,7 @@ export type GateMode = "required" | "optional";
 export interface GateConfig {
   gate_id: string;
   bill_field: string;
-  auth_field: string; // comma-separated for multi-field (e.g. "start_date,end_date")
+  treatment_field: string; // comma-separated for multi-field (e.g. "start_date,end_date")
   mode: GateMode;
   weight: number;
   rules: Rule[];
@@ -60,7 +60,7 @@ export interface MatchVector {
 export interface MatchCandidate {
   candidate_id: string;
   line_id: string;
-  auth_id: string;
+  treatment_id: string;
   vector: MatchVector;
   gate_details: GateResult[];
   composite_score: number;
@@ -75,7 +75,7 @@ export interface Allocation {
   allocation_id: string;
   candidate_id: string;
   line_id: string;
-  auth_id: string;
+  treatment_id: string;
   units_allocated: number;
   status: AllocationStatus;
 }

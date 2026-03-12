@@ -1,31 +1,31 @@
 import { useState, useMemo, useCallback } from "react";
 import type {
   Allocation,
-  Authorization,
+  Treatment,
   ChargeLine,
   GateConfig,
   MatchCandidate,
 } from "./types/models.ts";
 import { generateCandidates } from "./engine/index.ts";
-import authData from "./data/authorizations.json";
+import treatmentData from "./data/treatments.json";
 import lineData from "./data/charge-lines.json";
 import gateConfig from "./data/gate-config.json";
 import { LinesTable } from "./components/LinesTable.tsx";
-import { AuthsTable } from "./components/AuthsTable.tsx";
+import { TreatmentsTable } from "./components/TreatmentsTable.tsx";
 import { CandidatesTable } from "./components/CandidatesTable.tsx";
 import { AllocationsTable } from "./components/AllocationsTable.tsx";
 import { GateConfigTable } from "./components/GateConfigTable.tsx";
 import "./App.css";
 
-const initialAuths = authData as Authorization[];
+const initialTreatments = treatmentData as Treatment[];
 const initialLines = lineData as ChargeLine[];
 const gates = gateConfig as GateConfig[];
 
-type Tab = "lines" | "auths" | "candidates" | "allocations" | "gates";
+type Tab = "lines" | "treatments" | "candidates" | "allocations" | "gates";
 
 const tabs: { key: Tab; label: string }[] = [
   { key: "lines", label: "Lines" },
-  { key: "auths", label: "Treatments" },
+  { key: "treatments", label: "Treatments" },
   { key: "candidates", label: "Candidates" },
   { key: "allocations", label: "Allocations" },
   { key: "gates", label: "Gate Config" },
@@ -48,13 +48,13 @@ function unitsAllocatedForLine(
     .reduce((sum, a) => sum + a.units_allocated, 0);
 }
 
-/** Sum of units allocated (non-deleted) for a given auth */
-function unitsAllocatedForAuth(
+/** Sum of units allocated (non-deleted) for a given treatment */
+function unitsAllocatedForTreatment(
   allocations: Allocation[],
-  authId: string
+  treatmentId: string
 ): number {
   return allocations
-    .filter((a) => a.auth_id === authId)
+    .filter((a) => a.treatment_id === treatmentId)
     .reduce((sum, a) => sum + a.units_allocated, 0);
 }
 
@@ -62,11 +62,11 @@ function App() {
   const [activeTab, setActiveTab] = useState<Tab>("candidates");
   const [allocations, setAllocations] = useState<Allocation[]>([]);
   const [lines, setLines] = useState<ChargeLine[]>(initialLines);
-  const [auths, setAuths] = useState<Authorization[]>(initialAuths);
+  const [treatments, setTreatments] = useState<Treatment[]>(initialTreatments);
 
   const candidates = useMemo(
-    () => generateCandidates(lines, auths, gates),
-    [lines, auths]
+    () => generateCandidates(lines, treatments, gates),
+    [lines, treatments]
   );
 
   const lineRemaining = useCallback(
@@ -78,13 +78,13 @@ function App() {
     [allocations, lines]
   );
 
-  const authRemaining = useCallback(
-    (authId: string) => {
-      const auth = auths.find((a) => a.auth_id === authId);
-      if (!auth) return 0;
-      return auth.units_authorized - unitsAllocatedForAuth(allocations, authId);
+  const treatmentRemaining = useCallback(
+    (treatmentId: string) => {
+      const treatment = treatments.find((a) => a.treatment_id === treatmentId);
+      if (!treatment) return 0;
+      return treatment.units_approved - unitsAllocatedForTreatment(allocations, treatmentId);
     },
-    [allocations, auths]
+    [allocations, treatments]
   );
 
   const handleLineChange = (lineId: string, field: keyof ChargeLine, value: string | number) => {
@@ -93,9 +93,9 @@ function App() {
     );
   };
 
-  const handleAuthChange = (authId: string, field: keyof Authorization, value: string | number) => {
-    setAuths((prev) =>
-      prev.map((a) => (a.auth_id === authId ? { ...a, [field]: value } : a))
+  const handleTreatmentChange = (treatmentId: string, field: keyof Treatment, value: string | number) => {
+    setTreatments((prev) =>
+      prev.map((a) => (a.treatment_id === treatmentId ? { ...a, [field]: value } : a))
     );
   };
 
@@ -114,7 +114,7 @@ function App() {
         allocation_id: nextAllocId(),
         candidate_id: candidate.candidate_id,
         line_id: candidate.line_id,
-        auth_id: candidate.auth_id,
+        treatment_id: candidate.treatment_id,
         units_allocated: units,
         status: "Pending",
       },
@@ -148,17 +148,17 @@ function App() {
         {activeTab === "lines" && (
           <LinesTable lines={lines} allocations={allocations} onLineChange={handleLineChange} />
         )}
-        {activeTab === "auths" && (
-          <AuthsTable auths={auths} allocations={allocations} onAuthChange={handleAuthChange} />
+        {activeTab === "treatments" && (
+          <TreatmentsTable treatments={treatments} allocations={allocations} onTreatmentChange={handleTreatmentChange} />
         )}
         {activeTab === "candidates" && (
           <CandidatesTable
             candidates={candidates}
             lines={lines}
-            auths={auths}
+            treatments={treatments}
             allocations={allocations}
             lineRemaining={lineRemaining}
-            authRemaining={authRemaining}
+            treatmentRemaining={treatmentRemaining}
             onAllocate={handleAllocate}
           />
         )}
@@ -166,7 +166,7 @@ function App() {
           <AllocationsTable
             allocations={allocations}
             lines={lines}
-            auths={auths}
+            treatments={treatments}
             onDelete={handleDelete}
             onUnitsChange={handleAllocUnitsChange}
           />

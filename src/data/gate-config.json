@@ -2,7 +2,7 @@
   {
     "gate_id": "provider",
     "bill_field": "provider_id",
-    "auth_field": "provider_id",
+    "treatment_field": "provider_id",
     "mode": "required",
     "weight": 1.0,
     "rules": [
@@ -12,7 +12,7 @@
   {
     "gate_id": "cpt",
     "bill_field": "cpt",
-    "auth_field": "cpt",
+    "treatment_field": "cpt",
     "mode": "required",
     "weight": 3.0,
     "rules": [
@@ -23,7 +23,7 @@
   {
     "gate_id": "dos",
     "bill_field": "dos",
-    "auth_field": "start_date,end_date",
+    "treatment_field": "start_date,end_date",
     "mode": "optional",
     "weight": 2.0,
     "rules": [

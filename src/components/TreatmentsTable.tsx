@@ -1,15 +1,15 @@
-import type { Allocation, Authorization } from "../types/models.ts";
+import type { Allocation, Treatment } from "../types/models.ts";
 
 interface Props {
-  auths: Authorization[];
+  treatments: Treatment[];
   allocations: Allocation[];
-  onAuthChange: (authId: string, field: keyof Authorization, value: string | number) => void;
+  onTreatmentChange: (treatmentId: string, field: keyof Treatment, value: string | number) => void;
 }
 
-export function AuthsTable({ auths, allocations, onAuthChange }: Props) {
-  function allocated(authId: string) {
+export function TreatmentsTable({ treatments, allocations, onTreatmentChange }: Props) {
+  function allocated(treatmentId: string) {
     return allocations
-      .filter((a) => a.auth_id === authId)
+      .filter((a) => a.treatment_id === treatmentId)
       .reduce((sum, a) => sum + a.units_allocated, 0);
   }
 
@@ -17,7 +17,7 @@ export function AuthsTable({ auths, allocations, onAuthChange }: Props) {
     <table>
       <thead>
         <tr>
-          <th>Auth ID</th>
+          <th>Treatment ID</th>
           <th>Provider</th>
           <th>CPT</th>
           <th>Units</th>
@@ -28,24 +28,24 @@ export function AuthsTable({ auths, allocations, onAuthChange }: Props) {
         </tr>
       </thead>
       <tbody>
-        {auths.map((a) => {
-          const alloc = allocated(a.auth_id);
-          const remaining = a.units_authorized - alloc;
+        {treatments.map((a) => {
+          const alloc = allocated(a.treatment_id);
+          const remaining = a.units_approved - alloc;
           return (
-            <tr key={a.auth_id}>
-              <td>{a.auth_id}</td>
+            <tr key={a.treatment_id}>
+              <td>{a.treatment_id}</td>
               <td>
                 <input
                   className="edit-input"
                   value={a.provider_id}
-                  onChange={(e) => onAuthChange(a.auth_id, "provider_id", e.target.value)}
+                  onChange={(e) => onTreatmentChange(a.treatment_id, "provider_id", e.target.value)}
                 />
               </td>
               <td>
                 <input
                   className="edit-input"
                   value={a.cpt}
-                  onChange={(e) => onAuthChange(a.auth_id, "cpt", e.target.value)}
+                  onChange={(e) => onTreatmentChange(a.treatment_id, "cpt", e.target.value)}
                 />
               </td>
               <td>
@@ -53,8 +53,8 @@ export function AuthsTable({ auths, allocations, onAuthChange }: Props) {
                   className="edit-input edit-input-num"
                   type="number"
                   min={0}
-                  value={a.units_authorized}
-                  onChange={(e) => onAuthChange(a.auth_id, "units_authorized", Math.max(0, Number(e.target.value)))}
+                  value={a.units_approved}
+                  onChange={(e) => onTreatmentChange(a.treatment_id, "units_approved", Math.max(0, Number(e.target.value)))}
                 />
               </td>
               <td>{alloc}</td>
@@ -66,7 +66,7 @@ export function AuthsTable({ auths, allocations, onAuthChange }: Props) {
                   className="edit-input"
                   type="date"
                   value={a.start_date}
-                  onChange={(e) => onAuthChange(a.auth_id, "start_date", e.target.value)}
+                  onChange={(e) => onTreatmentChange(a.treatment_id, "start_date", e.target.value)}
                 />
               </td>
               <td>
@@ -74,7 +74,7 @@ export function AuthsTable({ auths, allocations, onAuthChange }: Props) {
                   className="edit-input"
                   type="date"
                   value={a.end_date}
-                  onChange={(e) => onAuthChange(a.auth_id, "end_date", e.target.value)}
+                  onChange={(e) => onTreatmentChange(a.treatment_id, "end_date", e.target.value)}
                 />
               </td>
             </tr>

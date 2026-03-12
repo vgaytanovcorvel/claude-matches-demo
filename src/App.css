@@ -267,7 +267,7 @@ tr:hover {
   color: #60a5fa;
 }
 
-.auth-id {
+.treatment-id {
   font-weight: 600;
   font-family: monospace;
   color: #c084fc;
@@ -298,7 +298,7 @@ tr:hover {
   background: #111;
 }
 
-.auth-detail {
+.treatment-detail {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -372,7 +372,7 @@ input[type="date"].edit-input {
   .line-header:hover { background: #eee; }
   .candidates-subtable th { background: #fafafa; }
   .line-id { color: #2563eb; }
-  .auth-id { color: #7c3aed; }
+  .treatment-id { color: #7c3aed; }
   .detail-field strong { color: #333; }
   .edit-input:focus { background: #fff; border-color: #646cff; }
   .edit-input:hover { border-color: #ccc; }

@@ -7,7 +7,7 @@ export function GateConfigTable({ gates }: { gates: GateConfig[] }) {
         <tr>
           <th>Gate</th>
           <th>Bill Field</th>
-          <th>Auth Field</th>
+          <th>Treatment Field</th>
           <th>Mode</th>
           <th>Weight</th>
           <th>Rules</th>
@@ -18,7 +18,7 @@ export function GateConfigTable({ gates }: { gates: GateConfig[] }) {
           <tr key={g.gate_id}>
             <td>{g.gate_id}</td>
             <td style={{ fontFamily: "monospace" }}>{g.bill_field}</td>
-            <td style={{ fontFamily: "monospace" }}>{g.auth_field}</td>
+            <td style={{ fontFamily: "monospace" }}>{g.treatment_field}</td>
             <td>
               <span className={`gate-mode gate-${g.mode}`}>{g.mode}</span>
             </td>

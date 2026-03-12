@@ -1,44 +1,44 @@
 import { useMemo } from "react";
 import type {
   Allocation,
-  Authorization,
+  Treatment,
   ChargeLine,
 } from "../types/models.ts";
 
 interface Props {
   allocations: Allocation[];
   lines: ChargeLine[];
-  auths: Authorization[];
+  treatments: Treatment[];
   onDelete: (allocationId: string) => void;
   onUnitsChange: (allocationId: string, units: number) => void;
 }
 
 function AllocationRow({
   allocation,
-  auth,
+  treatment,
   onDelete,
   onUnitsChange,
 }: {
   allocation: Allocation;
-  auth: Authorization | undefined;
+  treatment: Treatment | undefined;
   onDelete: (allocationId: string) => void;
   onUnitsChange: (allocationId: string, units: number) => void;
 }) {
   return (
     <tr>
       <td>
-        {auth ? (
-          <div className="auth-detail">
-            <span className="auth-id">{auth.auth_id}</span>
+        {treatment ? (
+          <div className="treatment-detail">
+            <span className="treatment-id">{treatment.treatment_id}</span>
             <span className="detail-field">
-              CPT <strong>{auth.cpt}</strong>
+              CPT <strong>{treatment.cpt}</strong>
             </span>
             <span className="detail-field">
-              {auth.start_date} to {auth.end_date}
+              {treatment.start_date} to {treatment.end_date}
             </span>
           </div>
         ) : (
-          allocation.auth_id
+          allocation.treatment_id
         )}
       </td>
       <td>
@@ -65,21 +65,21 @@ function AllocationRow({
 function LineAllocGroup({
   line,
   allocations,
-  auths,
+  treatments,
   onDelete,
   onUnitsChange,
 }: {
   line: ChargeLine;
   allocations: Allocation[];
-  auths: Authorization[];
+  treatments: Treatment[];
   onDelete: (allocationId: string) => void;
   onUnitsChange: (allocationId: string, units: number) => void;
 }) {
-  const authMap = useMemo(() => {
-    const m = new Map<string, Authorization>();
-    for (const a of auths) m.set(a.auth_id, a);
+  const treatmentMap = useMemo(() => {
+    const m = new Map<string, Treatment>();
+    for (const a of treatments) m.set(a.treatment_id, a);
     return m;
-  }, [auths]);
+  }, [treatments]);
 
   const totalAllocated = allocations.reduce(
     (s, a) => s + a.units_allocated,
@@ -119,7 +119,7 @@ function LineAllocGroup({
             <AllocationRow
               key={a.allocation_id}
               allocation={a}
-              auth={authMap.get(a.auth_id)}
+              treatment={treatmentMap.get(a.treatment_id)}
               onDelete={onDelete}
               onUnitsChange={onUnitsChange}
             />
@@ -133,7 +133,7 @@ function LineAllocGroup({
 export function AllocationsTable({
   allocations,
   lines,
-  auths,
+  treatments,
   onDelete,
   onUnitsChange,
 }: Props) {
@@ -171,7 +171,7 @@ export function AllocationsTable({
             key={lineId}
             line={line}
             allocations={lineAllocs}
-            auths={auths}
+            treatments={treatments}
             onDelete={onDelete}
             onUnitsChange={onUnitsChange}
           />

@@ -1,27 +1,27 @@
 import type { Rule, RuleResult } from "../types/models.ts";
 
-function runExact(billValue: string, authValue: string): RuleResult {
-  return billValue === authValue
+function runExact(billValue: string, treatmentValue: string): RuleResult {
+  return billValue === treatmentValue
     ? { matched: true, score: 1.0 }
     : { matched: false, score: 0 };
 }
 
 function runPrefix(
   billValue: string,
-  authValue: string,
+  treatmentValue: string,
   params: Record<string, unknown>
 ): RuleResult {
   const minLength = (params.min_length as number) ?? 3;
   let shared = 0;
-  const limit = Math.min(billValue.length, authValue.length);
+  const limit = Math.min(billValue.length, treatmentValue.length);
   for (let i = 0; i < limit; i++) {
-    if (billValue[i] === authValue[i]) shared++;
+    if (billValue[i] === treatmentValue[i]) shared++;
     else break;
   }
   if (shared < minLength) {
     return { matched: false, score: 0 };
   }
-  const maxLen = Math.max(billValue.length, authValue.length);
+  const maxLen = Math.max(billValue.length, treatmentValue.length);
   return { matched: true, score: shared / maxLen };
 }
 
@@ -58,16 +58,16 @@ function runDateInRange(
 export function executeRule(
   rule: Rule,
   billValue: string,
-  authValue: string
+  treatmentValue: string
 ): RuleResult {
   const params = rule.params ?? {};
   switch (rule.type) {
     case "exact":
-      return runExact(billValue, authValue);
+      return runExact(billValue, treatmentValue);
     case "prefix":
-      return runPrefix(billValue, authValue, params);
+      return runPrefix(billValue, treatmentValue, params);
     case "date_in_range":
-      return runDateInRange(billValue, authValue, params);
+      return runDateInRange(billValue, treatmentValue, params);
     default:
       return { matched: false, score: 0 };
   }
