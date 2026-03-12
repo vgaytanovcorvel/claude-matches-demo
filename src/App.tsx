@@ -24,7 +24,7 @@ const gates = gateConfig as GateConfig[];
 type Tab = "lines" | "auths" | "candidates" | "allocations" | "gates";
 
 const tabs: { key: Tab; label: string }[] = [
-  { key: "lines", label: "Charge Lines" },
+  { key: "lines", label: "Lines" },
   { key: "auths", label: "Authorizations" },
   { key: "candidates", label: "Candidates" },
   { key: "allocations", label: "Allocations" },

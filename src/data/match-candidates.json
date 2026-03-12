@@ -1,7 +1,7 @@
 [
   {
     "candidate_id": "match_001",
-    "line_id": "charge_01",
+    "line_id": "line_01",
     "auth_id": "auth_01",
     "vector": { "cpt": 1.0, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 1.0,
@@ -9,7 +9,7 @@
   },
   {
     "candidate_id": "match_002",
-    "line_id": "charge_02",
+    "line_id": "line_02",
     "auth_id": "auth_01",
     "vector": { "cpt": 1.0, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 1.0,
@@ -17,7 +17,7 @@
   },
   {
     "candidate_id": "match_003",
-    "line_id": "charge_03",
+    "line_id": "line_03",
     "auth_id": "auth_02",
     "vector": { "cpt": 1.0, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 1.0,
@@ -25,7 +25,7 @@
   },
   {
     "candidate_id": "match_004",
-    "line_id": "charge_04",
+    "line_id": "line_04",
     "auth_id": "auth_03",
     "vector": { "cpt": 1.0, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 1.0,
@@ -33,7 +33,7 @@
   },
   {
     "candidate_id": "match_005",
-    "line_id": "charge_05",
+    "line_id": "line_05",
     "auth_id": "auth_03",
     "vector": { "cpt": 1.0, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 1.0,
@@ -41,7 +41,7 @@
   },
   {
     "candidate_id": "match_006",
-    "line_id": "charge_06",
+    "line_id": "line_06",
     "auth_id": "auth_04",
     "vector": { "cpt": 1.0, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 1.0,
@@ -49,7 +49,7 @@
   },
   {
     "candidate_id": "match_007",
-    "line_id": "charge_07",
+    "line_id": "line_07",
     "auth_id": "auth_05",
     "vector": { "cpt": 1.0, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 1.0,
@@ -57,7 +57,7 @@
   },
   {
     "candidate_id": "match_008",
-    "line_id": "charge_07",
+    "line_id": "line_07",
     "auth_id": "auth_01",
     "vector": { "cpt": 1.0, "dos": 1.0, "provider": 0.0, "proximity_days": 0 },
     "composite_score": 0.72,
@@ -65,7 +65,7 @@
   },
   {
     "candidate_id": "match_009",
-    "line_id": "charge_08",
+    "line_id": "line_08",
     "auth_id": "auth_02",
     "vector": { "cpt": 0.85, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 0.88,
@@ -73,7 +73,7 @@
   },
   {
     "candidate_id": "match_010",
-    "line_id": "charge_05",
+    "line_id": "line_05",
     "auth_id": "auth_04",
     "vector": { "cpt": 0.78, "dos": 1.0, "provider": 1.0, "proximity_days": 0 },
     "composite_score": 0.82,
