@@ -79,7 +79,7 @@ function CandidateRow({
             }}
           />
         ) : (
-          <span style={{ color: "#666" }}>{hasAllocation ? `${allocatedUnits}u` : "0"}</span>
+          <span style={{ color: "#666" }}>{hasAllocation ? allocatedUnits : "0"}</span>
         )}
       </td>
       <td>
