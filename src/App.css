@@ -278,6 +278,9 @@ tr:hover {
 .detail-field {
   font-size: 0.8rem;
   color: #999;
+}
+
+.treatment-card-header .detail-field {
   display: flex;
   align-items: center;
   flex-direction: column;
