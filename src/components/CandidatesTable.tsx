@@ -155,7 +155,7 @@ function LineGroup({
           <thead>
             <tr>
               <th>Score</th>
-              <th>Vector</th>
+              <th>Matching Elements</th>
               <th>Authorization</th>
               <th>Units</th>
               <th></th>
