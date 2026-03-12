@@ -1,86 +1,146 @@
-import type { Allocation, Treatment } from "../types/models.ts";
+import { useMemo } from "react";
+import type { Allocation, ChargeLine, Treatment } from "../types/models.ts";
 
 interface Props {
   treatments: Treatment[];
   allocations: Allocation[];
+  lines: ChargeLine[];
   onTreatmentChange: (treatmentId: string, field: keyof Treatment, value: string | number) => void;
 }
 
-export function TreatmentsTable({ treatments, allocations, onTreatmentChange }: Props) {
-  function allocated(treatmentId: string) {
-    return allocations
-      .filter((a) => a.treatment_id === treatmentId)
-      .reduce((sum, a) => sum + a.units_allocated, 0);
-  }
+function TreatmentCard({
+  treatment,
+  treatmentAllocs,
+  lineMap,
+  onTreatmentChange,
+}: {
+  treatment: Treatment;
+  treatmentAllocs: Allocation[];
+  lineMap: Map<string, ChargeLine>;
+  onTreatmentChange: (treatmentId: string, field: keyof Treatment, value: string | number) => void;
+}) {
+  const totalAllocated = treatmentAllocs.reduce((s, a) => s + a.units_allocated, 0);
+  const remaining = treatment.units_approved - totalAllocated;
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Treatment ID</th>
-          <th>Provider</th>
-          <th>CPT</th>
-          <th>Units</th>
-          <th>Allocated</th>
-          <th>Remaining</th>
-          <th>Start</th>
-          <th>End</th>
-        </tr>
-      </thead>
-      <tbody>
-        {treatments.map((a) => {
-          const alloc = allocated(a.treatment_id);
-          const remaining = a.units_approved - alloc;
-          return (
-            <tr key={a.treatment_id}>
-              <td>{a.treatment_id}</td>
-              <td>
-                <input
-                  className="edit-input"
-                  value={a.provider_id}
-                  onChange={(e) => onTreatmentChange(a.treatment_id, "provider_id", e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  className="edit-input"
-                  value={a.cpt}
-                  onChange={(e) => onTreatmentChange(a.treatment_id, "cpt", e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  className="edit-input edit-input-num"
-                  type="number"
-                  min={0}
-                  value={a.units_approved}
-                  onChange={(e) => onTreatmentChange(a.treatment_id, "units_approved", Math.max(0, Number(e.target.value)))}
-                />
-              </td>
-              <td>{alloc}</td>
-              <td className={remaining === 0 ? "score-low" : ""}>
-                {remaining}
-              </td>
-              <td>
-                <input
-                  className="edit-input"
-                  type="date"
-                  value={a.start_date}
-                  onChange={(e) => onTreatmentChange(a.treatment_id, "start_date", e.target.value)}
-                />
-              </td>
-              <td>
-                <input
-                  className="edit-input"
-                  type="date"
-                  value={a.end_date}
-                  onChange={(e) => onTreatmentChange(a.treatment_id, "end_date", e.target.value)}
-                />
-              </td>
+    <div className="line-group">
+      <div className="line-header treatment-card-header">
+        <div className="line-detail">
+          <span className="treatment-id">{treatment.treatment_id}</span>
+          <span className="detail-field">
+            Provider{" "}
+            <input
+              className="edit-input edit-input-inline"
+              value={treatment.provider_id}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => onTreatmentChange(treatment.treatment_id, "provider_id", e.target.value)}
+            />
+          </span>
+          <span className="detail-field">
+            CPT{" "}
+            <input
+              className="edit-input edit-input-inline"
+              value={treatment.cpt}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => onTreatmentChange(treatment.treatment_id, "cpt", e.target.value)}
+            />
+          </span>
+          <span className="detail-field">
+            <input
+              className="edit-input edit-input-num"
+              type="number"
+              min={0}
+              value={treatment.units_approved}
+              onClick={(e) => e.stopPropagation()}
+              onChange={(e) => onTreatmentChange(treatment.treatment_id, "units_approved", Math.max(0, Number(e.target.value)))}
+            />
+            u approved
+          </span>
+          <span className="detail-field">
+            <strong className={remaining === 0 ? "score-low" : "avail-highlight"}>{remaining} remaining</strong>
+          </span>
+        </div>
+        <div className="treatment-dates">
+          <input
+            className="edit-input"
+            type="date"
+            value={treatment.start_date}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => onTreatmentChange(treatment.treatment_id, "start_date", e.target.value)}
+          />
+          <span className="detail-field">to</span>
+          <input
+            className="edit-input"
+            type="date"
+            value={treatment.end_date}
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => onTreatmentChange(treatment.treatment_id, "end_date", e.target.value)}
+          />
+        </div>
+      </div>
+      {treatmentAllocs.length > 0 ? (
+        <table className="candidates-subtable">
+          <thead>
+            <tr>
+              <th>Line</th>
+              <th>CPT</th>
+              <th>DOS</th>
+              <th>Units Allocated</th>
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
+          </thead>
+          <tbody>
+            {treatmentAllocs.map((a) => {
+              const line = lineMap.get(a.line_id);
+              return (
+                <tr key={a.allocation_id}>
+                  <td><span className="line-id">{a.line_id}</span></td>
+                  <td>{line?.cpt ?? "—"}</td>
+                  <td>{line?.dos ?? "—"}</td>
+                  <td>{a.units_allocated}</td>
+                </tr>
+              );
+            })}
+            <tr className="alloc-summary-row">
+              <td colSpan={3} style={{ textAlign: "right", color: "#888" }}>Total</td>
+              <td><strong>{totalAllocated}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      ) : (
+        <div className="no-allocs">No lines allocated yet</div>
+      )}
+    </div>
+  );
+}
+
+export function TreatmentsTable({ treatments, allocations, lines, onTreatmentChange }: Props) {
+  const lineMap = useMemo(() => {
+    const m = new Map<string, ChargeLine>();
+    for (const l of lines) m.set(l.line_id, l);
+    return m;
+  }, [lines]);
+
+  const allocsByTreatment = useMemo(() => {
+    const m = new Map<string, Allocation[]>();
+    for (const a of allocations) {
+      const arr = m.get(a.treatment_id) ?? [];
+      arr.push(a);
+      m.set(a.treatment_id, arr);
+    }
+    return m;
+  }, [allocations]);
+
+  return (
+    <div className="candidates-panel">
+      {treatments.map((t) => (
+        <TreatmentCard
+          key={t.treatment_id}
+          treatment={t}
+          treatmentAllocs={allocsByTreatment.get(t.treatment_id) ?? []}
+          lineMap={lineMap}
+          onTreatmentChange={onTreatmentChange}
+        />
+      ))}
+    </div>
   );
 }

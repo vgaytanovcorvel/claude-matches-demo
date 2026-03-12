@@ -305,6 +305,45 @@ tr:hover {
   flex-wrap: wrap;
 }
 
+/* Treatment card header */
+.treatment-card-header {
+  cursor: default;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+}
+
+.treatment-card-header:hover {
+  background: #1a1a1a;
+}
+
+.treatment-dates {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.treatment-dates .edit-input {
+  width: 8.5rem;
+}
+
+.edit-input-inline {
+  width: 5.5rem;
+  display: inline;
+}
+
+.no-allocs {
+  padding: 0.6rem 0.75rem;
+  color: #666;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.alloc-summary-row td {
+  border-top: 1px solid #333;
+  font-size: 0.8rem;
+}
+
 /* Available units emphasis */
 .avail-highlight {
   color: #4ade80;
@@ -378,4 +417,6 @@ input[type="date"].edit-input {
   .edit-input:hover { border-color: #ccc; }
   .avail-highlight { color: #16a34a; }
   .pinned-badge { background: #dbeafe; color: #2563eb; }
+  .treatment-card-header:hover { background: #f5f5f5; }
+  .alloc-summary-row td { border-top-color: #e0e0e0; }
 }
