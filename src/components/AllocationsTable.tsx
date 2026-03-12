@@ -109,7 +109,7 @@ function LineAllocGroup({
       <table className="candidates-subtable">
         <thead>
           <tr>
-            <th>Authorization</th>
+            <th>Treatment</th>
             <th>Units</th>
             <th></th>
           </tr>

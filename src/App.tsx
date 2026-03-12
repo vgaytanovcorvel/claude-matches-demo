@@ -25,7 +25,7 @@ type Tab = "lines" | "auths" | "candidates" | "allocations" | "gates";
 
 const tabs: { key: Tab; label: string }[] = [
   { key: "lines", label: "Lines" },
-  { key: "auths", label: "Authorizations" },
+  { key: "auths", label: "Treatments" },
   { key: "candidates", label: "Candidates" },
   { key: "allocations", label: "Allocations" },
   { key: "gates", label: "Gate Config" },
