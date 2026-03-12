@@ -22,16 +22,17 @@ function CandidateRow({
   auth,
   lineAvail,
   authAvail,
-  hasAllocation,
+  allocatedUnits,
   onAllocate,
 }: {
   candidate: MatchCandidate;
   auth: Authorization;
   lineAvail: number;
   authAvail: number;
-  hasAllocation: boolean;
+  allocatedUnits: number | null;
   onAllocate: (candidate: MatchCandidate, units: number) => void;
 }) {
+  const hasAllocation = allocatedUnits !== null;
   const maxUnits = Math.min(lineAvail, authAvail);
   const [units, setUnits] = useState(maxUnits);
 
@@ -78,7 +79,7 @@ function CandidateRow({
             }}
           />
         ) : (
-          <span style={{ color: "#666" }}>{hasAllocation ? "-" : "0"}</span>
+          <span style={{ color: "#666" }}>{hasAllocation ? `${allocatedUnits}u` : "0"}</span>
         )}
       </td>
       <td>
@@ -112,7 +113,11 @@ function LineGroup({
   onAllocate: (candidate: MatchCandidate, units: number) => void;
 }) {
   const [expanded, setExpanded] = useState(true);
-  const allocated = new Set(allocations.map((a) => a.candidate_id));
+  const allocMap = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const a of allocations) m.set(a.candidate_id, a.units_allocated);
+    return m;
+  }, [allocations]);
   const authMap = useMemo(() => {
     const m = new Map<string, Authorization>();
     for (const a of auths) m.set(a.auth_id, a);
@@ -164,7 +169,7 @@ function LineGroup({
                   auth={auth}
                   lineAvail={lineAvail}
                   authAvail={authRemaining(c.auth_id)}
-                  hasAllocation={allocated.has(c.candidate_id)}
+                  allocatedUnits={allocMap.get(c.candidate_id) ?? null}
                   onAllocate={onAllocate}
                 />
               );
