@@ -98,7 +98,7 @@ function LineAllocGroup({
             CPT <strong>{line.cpt}</strong>
           </span>
           <span className="detail-field">
-            {totalAllocated}/{line.units}u allocated
+            {totalAllocated}/{line.units} units allocated
           </span>
           <span className="detail-field">DOS {line.dos}</span>
         </div>

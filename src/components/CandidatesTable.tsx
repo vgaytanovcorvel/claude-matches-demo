@@ -58,7 +58,7 @@ function CandidateRow({
             CPT <strong>{treatment.cpt}</strong>
           </span>
           <span className="detail-field">
-            {treatment.units_approved}u (<strong className="avail-highlight">{treatmentAvail} avail</strong>)
+            {treatment.units_approved} units (<strong className="avail-highlight">{treatmentAvail} avail</strong>)
           </span>
           <span className="detail-field">
             {treatment.start_date} to {treatment.end_date}
@@ -142,7 +142,7 @@ function LineGroup({
             CPT <strong>{line.cpt}</strong>
           </span>
           <span className="detail-field">
-            {line.units}u (<strong className="avail-highlight">{lineAvail} remaining</strong>)
+            {line.units} units (<strong className="avail-highlight">{lineAvail} remaining</strong>)
           </span>
           <span className="detail-field">DOS {line.dos}</span>
         </div>

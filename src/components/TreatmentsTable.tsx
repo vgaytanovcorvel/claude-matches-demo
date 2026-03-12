@@ -54,7 +54,7 @@ function TreatmentCard({
               onClick={(e) => e.stopPropagation()}
               onChange={(e) => onTreatmentChange(treatment.treatment_id, "units_approved", Math.max(0, Number(e.target.value)))}
             />
-            u approved
+            units approved
           </span>
           <span className="detail-field">
             <strong className={remaining === 0 ? "score-low" : "avail-highlight"}>{remaining} remaining</strong>
