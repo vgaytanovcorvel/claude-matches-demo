@@ -12,6 +12,7 @@ interface Props {
   auths: Authorization[];
   onStatusChange: (allocationId: string, status: AllocationStatus) => void;
   onDelete: (allocationId: string) => void;
+  onUnitsChange: (allocationId: string, units: number) => void;
 }
 
 function AllocationRow({
@@ -19,11 +20,13 @@ function AllocationRow({
   auth,
   onStatusChange,
   onDelete,
+  onUnitsChange,
 }: {
   allocation: Allocation;
   auth: Authorization | undefined;
   onStatusChange: (allocationId: string, status: AllocationStatus) => void;
   onDelete: (allocationId: string) => void;
+  onUnitsChange: (allocationId: string, units: number) => void;
 }) {
   return (
     <tr>
@@ -47,7 +50,15 @@ function AllocationRow({
           allocation.auth_id
         )}
       </td>
-      <td>{allocation.units_allocated}</td>
+      <td>
+        <input
+          className="edit-input edit-input-num"
+          type="number"
+          min={0}
+          value={allocation.units_allocated}
+          onChange={(e) => onUnitsChange(allocation.allocation_id, Math.max(0, Number(e.target.value)))}
+        />
+      </td>
       <td>
         <div className="actions">
           <button
@@ -82,12 +93,14 @@ function LineAllocGroup({
   auths,
   onStatusChange,
   onDelete,
+  onUnitsChange,
 }: {
   line: ChargeLine;
   allocations: Allocation[];
   auths: Authorization[];
   onStatusChange: (allocationId: string, status: AllocationStatus) => void;
   onDelete: (allocationId: string) => void;
+  onUnitsChange: (allocationId: string, units: number) => void;
 }) {
   const authMap = useMemo(() => {
     const m = new Map<string, Authorization>();
@@ -137,6 +150,7 @@ function LineAllocGroup({
               auth={authMap.get(a.auth_id)}
               onStatusChange={onStatusChange}
               onDelete={onDelete}
+              onUnitsChange={onUnitsChange}
             />
           ))}
         </tbody>
@@ -151,6 +165,7 @@ export function AllocationsTable({
   auths,
   onStatusChange,
   onDelete,
+  onUnitsChange,
 }: Props) {
   if (allocations.length === 0) {
     return (
@@ -189,6 +204,7 @@ export function AllocationsTable({
             auths={auths}
             onStatusChange={onStatusChange}
             onDelete={onDelete}
+            onUnitsChange={onUnitsChange}
           />
         );
       })}

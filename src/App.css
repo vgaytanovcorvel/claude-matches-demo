@@ -305,6 +305,38 @@ tr:hover {
   flex-wrap: wrap;
 }
 
+/* Editable inputs */
+.edit-input {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.85rem;
+  color: inherit;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.edit-input:hover {
+  border-color: #444;
+}
+
+.edit-input:focus {
+  border-color: #646cff;
+  outline: none;
+  background: #1a1a1a;
+}
+
+.edit-input-num {
+  width: 4rem;
+  text-align: center;
+}
+
+input[type="date"].edit-input {
+  width: 9rem;
+}
+
 /* Light mode */
 @media (prefers-color-scheme: light) {
   th, td { border-bottom-color: #e0e0e0; }
@@ -323,4 +355,6 @@ tr:hover {
   .line-id { color: #2563eb; }
   .auth-id { color: #7c3aed; }
   .detail-field strong { color: #333; }
+  .edit-input:focus { background: #fff; border-color: #646cff; }
+  .edit-input:hover { border-color: #ccc; }
 }

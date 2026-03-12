@@ -18,8 +18,8 @@ import { AllocationsTable } from "./components/AllocationsTable.tsx";
 import { GateConfigTable } from "./components/GateConfigTable.tsx";
 import "./App.css";
 
-const auths = authData as Authorization[];
-const lines = lineData as ChargeLine[];
+const initialAuths = authData as Authorization[];
+const initialLines = lineData as ChargeLine[];
 const gates = gateConfig as GateConfig[];
 
 type Tab = "lines" | "auths" | "candidates" | "allocations" | "gates";
@@ -62,10 +62,12 @@ function unitsAllocatedForAuth(
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>("candidates");
   const [allocations, setAllocations] = useState<Allocation[]>([]);
+  const [lines, setLines] = useState<ChargeLine[]>(initialLines);
+  const [auths, setAuths] = useState<Authorization[]>(initialAuths);
 
   const candidates = useMemo(
     () => generateCandidates(lines, auths, gates),
-    []
+    [lines, auths]
   );
 
   const lineRemaining = useCallback(
@@ -74,7 +76,7 @@ function App() {
       if (!line) return 0;
       return line.units - unitsAllocatedForLine(allocations, lineId);
     },
-    [allocations]
+    [allocations, lines]
   );
 
   const authRemaining = useCallback(
@@ -83,8 +85,28 @@ function App() {
       if (!auth) return 0;
       return auth.units_authorized - unitsAllocatedForAuth(allocations, authId);
     },
-    [allocations]
+    [allocations, auths]
   );
+
+  const handleLineChange = (lineId: string, field: keyof ChargeLine, value: string | number) => {
+    setLines((prev) =>
+      prev.map((l) => (l.line_id === lineId ? { ...l, [field]: value } : l))
+    );
+  };
+
+  const handleAuthChange = (authId: string, field: keyof Authorization, value: string | number) => {
+    setAuths((prev) =>
+      prev.map((a) => (a.auth_id === authId ? { ...a, [field]: value } : a))
+    );
+  };
+
+  const handleAllocUnitsChange = (allocationId: string, units: number) => {
+    setAllocations((prev) =>
+      prev.map((a) =>
+        a.allocation_id === allocationId ? { ...a, units_allocated: units } : a
+      )
+    );
+  };
 
   const handleAllocate = (candidate: MatchCandidate, units: number) => {
     setAllocations((prev) => [
@@ -136,10 +158,10 @@ function App() {
       </nav>
       <div className="panel">
         {activeTab === "lines" && (
-          <LinesTable lines={lines} allocations={allocations} />
+          <LinesTable lines={lines} allocations={allocations} onLineChange={handleLineChange} />
         )}
         {activeTab === "auths" && (
-          <AuthsTable auths={auths} allocations={allocations} />
+          <AuthsTable auths={auths} allocations={allocations} onAuthChange={handleAuthChange} />
         )}
         {activeTab === "candidates" && (
           <CandidatesTable
@@ -159,6 +181,7 @@ function App() {
             auths={auths}
             onStatusChange={handleStatusChange}
             onDelete={handleDelete}
+            onUnitsChange={handleAllocUnitsChange}
           />
         )}
         {activeTab === "gates" && (
