@@ -311,6 +311,19 @@ tr:hover {
   font-weight: 600;
 }
 
+/* Pinned badge */
+.pinned-badge {
+  background: #1e3a5f;
+  color: #60a5fa;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-right: 0.3rem;
+}
+
 /* Editable inputs */
 .edit-input {
   background: transparent;
@@ -364,4 +377,5 @@ input[type="date"].edit-input {
   .edit-input:focus { background: #fff; border-color: #646cff; }
   .edit-input:hover { border-color: #ccc; }
   .avail-highlight { color: #16a34a; }
+  .pinned-badge { background: #dbeafe; color: #2563eb; }
 }
