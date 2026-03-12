@@ -79,7 +79,7 @@ function CandidateRow({
             }}
           />
         ) : (
-          <span style={{ color: "#666" }}>{hasAllocation ? <><span className="pinned-icon" title="Allocated">&#x1F4CC;</span> {allocatedUnits}</> : "0"}</span>
+          <span style={{ color: "#666" }}>{hasAllocation ? allocatedUnits : "0"}</span>
         )}
       </td>
       <td>
@@ -90,6 +90,9 @@ function CandidateRow({
         >
           {hasAllocation ? "Allocated" : "Allocate"}
         </button>
+      </td>
+      <td>
+        {hasAllocation && <span className="pinned-icon" title="Allocated">&#x1F4CC;</span>}
       </td>
     </tr>
   );
@@ -155,6 +158,7 @@ function LineGroup({
               <th>Vector</th>
               <th>Authorization</th>
               <th>Units</th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
