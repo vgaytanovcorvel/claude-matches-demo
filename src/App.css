@@ -305,6 +305,12 @@ tr:hover {
   flex-wrap: wrap;
 }
 
+/* Available units emphasis */
+.avail-highlight {
+  color: #4ade80;
+  font-weight: 600;
+}
+
 /* Editable inputs */
 .edit-input {
   background: transparent;
@@ -357,4 +363,5 @@ input[type="date"].edit-input {
   .detail-field strong { color: #333; }
   .edit-input:focus { background: #fff; border-color: #646cff; }
   .edit-input:hover { border-color: #ccc; }
+  .avail-highlight { color: #16a34a; }
 }

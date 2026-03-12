@@ -48,21 +48,21 @@ function CandidateRow({
         <ScoreCell score={candidate.composite_score} />
       </td>
       <td>
+        <VectorCell vector={candidate.vector} />
+      </td>
+      <td>
         <div className="auth-detail">
           <span className="auth-id">{auth.auth_id}</span>
           <span className="detail-field">
             CPT <strong>{auth.cpt}</strong>
           </span>
           <span className="detail-field">
-            {auth.units_authorized}u ({authAvail} avail)
+            {auth.units_authorized}u (<strong className="avail-highlight">{authAvail} avail</strong>)
           </span>
           <span className="detail-field">
             {auth.start_date} to {auth.end_date}
           </span>
         </div>
-      </td>
-      <td>
-        <VectorCell vector={candidate.vector} />
       </td>
       <td>
         {maxUnits > 0 && !hasAllocation ? (
@@ -134,7 +134,7 @@ function LineGroup({
             CPT <strong>{line.cpt}</strong>
           </span>
           <span className="detail-field">
-            {line.units}u ({lineAvail} remaining)
+            {line.units}u (<strong className="avail-highlight">{lineAvail} remaining</strong>)
           </span>
           <span className="detail-field">DOS {line.dos}</span>
         </div>
@@ -147,8 +147,8 @@ function LineGroup({
           <thead>
             <tr>
               <th>Score</th>
-              <th>Authorization</th>
               <th>Vector</th>
+              <th>Authorization</th>
               <th>Units</th>
               <th></th>
             </tr>
