@@ -149,7 +149,7 @@ function App() {
           <LinesTable lines={lines} allocations={allocations} onLineChange={handleLineChange} />
         )}
         {activeTab === "treatments" && (
-          <TreatmentsTable treatments={treatments} allocations={allocations} lines={lines} onTreatmentChange={handleTreatmentChange} />
+          <TreatmentsTable treatments={treatments} allocations={allocations} lines={lines} onTreatmentChange={handleTreatmentChange} onDeleteAllocation={handleDelete} />
         )}
         {activeTab === "candidates" && (
           <CandidatesTable

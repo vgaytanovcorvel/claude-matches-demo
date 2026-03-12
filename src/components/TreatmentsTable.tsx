@@ -6,6 +6,7 @@ interface Props {
   allocations: Allocation[];
   lines: ChargeLine[];
   onTreatmentChange: (treatmentId: string, field: keyof Treatment, value: string | number) => void;
+  onDeleteAllocation: (allocationId: string) => void;
 }
 
 function TreatmentCard({
@@ -13,11 +14,13 @@ function TreatmentCard({
   treatmentAllocs,
   lineMap,
   onTreatmentChange,
+  onDeleteAllocation,
 }: {
   treatment: Treatment;
   treatmentAllocs: Allocation[];
   lineMap: Map<string, ChargeLine>;
   onTreatmentChange: (treatmentId: string, field: keyof Treatment, value: string | number) => void;
+  onDeleteAllocation: (allocationId: string) => void;
 }) {
   const totalAllocated = treatmentAllocs.reduce((s, a) => s + a.units_allocated, 0);
   const remaining = treatment.units_approved - totalAllocated;
@@ -27,8 +30,8 @@ function TreatmentCard({
       <div className="line-header treatment-card-header">
         <div className="line-detail">
           <span className="treatment-id">{treatment.treatment_id}</span>
-          <span className="detail-field">
-            Provider{" "}
+          <span className="detail-field tc-provider">
+            <span className="label">Provider</span>
             <input
               className="edit-input edit-input-inline"
               value={treatment.provider_id}
@@ -36,8 +39,8 @@ function TreatmentCard({
               onChange={(e) => onTreatmentChange(treatment.treatment_id, "provider_id", e.target.value)}
             />
           </span>
-          <span className="detail-field">
-            CPT{" "}
+          <span className="detail-field tc-cpt">
+            <span className="label">CPT</span>
             <input
               className="edit-input edit-input-inline"
               value={treatment.cpt}
@@ -45,7 +48,8 @@ function TreatmentCard({
               onChange={(e) => onTreatmentChange(treatment.treatment_id, "cpt", e.target.value)}
             />
           </span>
-          <span className="detail-field">
+          <span className="detail-field tc-units">
+            <span className="label">Units Approved</span>
             <input
               className="edit-input edit-input-num"
               type="number"
@@ -54,10 +58,10 @@ function TreatmentCard({
               onClick={(e) => e.stopPropagation()}
               onChange={(e) => onTreatmentChange(treatment.treatment_id, "units_approved", Math.max(0, Number(e.target.value)))}
             />
-            units approved
           </span>
-          <span className="detail-field">
-            <strong className={remaining === 0 ? "score-low" : "avail-highlight"}>{remaining} remaining</strong>
+          <span className="detail-field tc-remaining">
+            <span className="label">Remaining</span>
+            <strong className={remaining === 0 ? "score-low" : "avail-highlight"}>{remaining}</strong>
           </span>
         </div>
         <div className="treatment-dates">
@@ -86,6 +90,7 @@ function TreatmentCard({
               <th>CPT</th>
               <th>DOS</th>
               <th>Units Allocated</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -97,12 +102,14 @@ function TreatmentCard({
                   <td>{line?.cpt ?? "—"}</td>
                   <td>{line?.dos ?? "—"}</td>
                   <td>{a.units_allocated}</td>
+                  <td><button className="btn btn-delete" onClick={() => onDeleteAllocation(a.allocation_id)}>Delete</button></td>
                 </tr>
               );
             })}
             <tr className="alloc-summary-row">
               <td colSpan={3}>Total</td>
               <td><strong>{totalAllocated}</strong></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -113,7 +120,7 @@ function TreatmentCard({
   );
 }
 
-export function TreatmentsTable({ treatments, allocations, lines, onTreatmentChange }: Props) {
+export function TreatmentsTable({ treatments, allocations, lines, onTreatmentChange, onDeleteAllocation }: Props) {
   const lineMap = useMemo(() => {
     const m = new Map<string, ChargeLine>();
     for (const l of lines) m.set(l.line_id, l);
@@ -139,6 +146,7 @@ export function TreatmentsTable({ treatments, allocations, lines, onTreatmentCha
           treatmentAllocs={allocsByTreatment.get(t.treatment_id) ?? []}
           lineMap={lineMap}
           onTreatmentChange={onTreatmentChange}
+          onDeleteAllocation={onDeleteAllocation}
         />
       ))}
     </div>

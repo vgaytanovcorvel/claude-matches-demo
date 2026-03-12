@@ -271,11 +271,23 @@ tr:hover {
   font-weight: 600;
   font-family: monospace;
   color: #c084fc;
+  width: 6.5rem;
+  flex-shrink: 0;
 }
 
 .detail-field {
   font-size: 0.8rem;
   color: #999;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.detail-field .label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .detail-field strong {
@@ -305,6 +317,12 @@ tr:hover {
   flex-wrap: wrap;
 }
 
+/* Treatment card column widths */
+.tc-provider { width: 10rem; flex-shrink: 0; }
+.tc-cpt { width: 7rem; flex-shrink: 0; }
+.tc-units { width: 11rem; flex-shrink: 0; }
+.tc-remaining { width: 7.5rem; flex-shrink: 0; }
+
 /* Treatment card header */
 .treatment-card-header {
   cursor: default;
@@ -328,7 +346,7 @@ tr:hover {
 }
 
 .edit-input-inline {
-  width: 5.5rem;
+  width: 5.5rem !important;
   display: inline-block;
 }
 
