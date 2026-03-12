@@ -1,7 +1,6 @@
 import { useState, useMemo, useCallback } from "react";
 import type {
   Allocation,
-  AllocationStatus,
   Authorization,
   ChargeLine,
   GateConfig,
@@ -122,17 +121,6 @@ function App() {
     ]);
   };
 
-  const handleStatusChange = (
-    allocationId: string,
-    status: AllocationStatus
-  ) => {
-    setAllocations((prev) =>
-      prev.map((a) =>
-        a.allocation_id === allocationId ? { ...a, status } : a
-      )
-    );
-  };
-
   const handleDelete = (allocationId: string) => {
     setAllocations((prev) =>
       prev.filter((a) => a.allocation_id !== allocationId)
@@ -179,7 +167,6 @@ function App() {
             allocations={allocations}
             lines={lines}
             auths={auths}
-            onStatusChange={handleStatusChange}
             onDelete={handleDelete}
             onUnitsChange={handleAllocUnitsChange}
           />

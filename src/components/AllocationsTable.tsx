@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import type {
   Allocation,
-  AllocationStatus,
   Authorization,
   ChargeLine,
 } from "../types/models.ts";
@@ -10,7 +9,6 @@ interface Props {
   allocations: Allocation[];
   lines: ChargeLine[];
   auths: Authorization[];
-  onStatusChange: (allocationId: string, status: AllocationStatus) => void;
   onDelete: (allocationId: string) => void;
   onUnitsChange: (allocationId: string, units: number) => void;
 }
@@ -18,23 +16,16 @@ interface Props {
 function AllocationRow({
   allocation,
   auth,
-  onStatusChange,
   onDelete,
   onUnitsChange,
 }: {
   allocation: Allocation;
   auth: Authorization | undefined;
-  onStatusChange: (allocationId: string, status: AllocationStatus) => void;
   onDelete: (allocationId: string) => void;
   onUnitsChange: (allocationId: string, units: number) => void;
 }) {
   return (
     <tr>
-      <td>
-        <span className={`status status-${allocation.status.toLowerCase()}`}>
-          {allocation.status}
-        </span>
-      </td>
       <td>
         {auth ? (
           <div className="auth-detail">
@@ -60,28 +51,12 @@ function AllocationRow({
         />
       </td>
       <td>
-        <div className="actions">
-          <button
-            className="btn btn-approve"
-            disabled={allocation.status === "Approved"}
-            onClick={() => onStatusChange(allocation.allocation_id, "Approved")}
-          >
-            Approve
-          </button>
-          <button
-            className="btn btn-reject"
-            disabled={allocation.status === "Rejected"}
-            onClick={() => onStatusChange(allocation.allocation_id, "Rejected")}
-          >
-            Reject
-          </button>
-          <button
-            className="btn btn-delete"
-            onClick={() => onDelete(allocation.allocation_id)}
-          >
-            Delete
-          </button>
-        </div>
+        <button
+          className="btn btn-delete"
+          onClick={() => onDelete(allocation.allocation_id)}
+        >
+          Delete
+        </button>
       </td>
     </tr>
   );
@@ -91,14 +66,12 @@ function LineAllocGroup({
   line,
   allocations,
   auths,
-  onStatusChange,
   onDelete,
   onUnitsChange,
 }: {
   line: ChargeLine;
   allocations: Allocation[];
   auths: Authorization[];
-  onStatusChange: (allocationId: string, status: AllocationStatus) => void;
   onDelete: (allocationId: string) => void;
   onUnitsChange: (allocationId: string, units: number) => void;
 }) {
@@ -136,10 +109,9 @@ function LineAllocGroup({
       <table className="candidates-subtable">
         <thead>
           <tr>
-            <th>Status</th>
             <th>Authorization</th>
             <th>Units</th>
-            <th>Actions</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -148,7 +120,6 @@ function LineAllocGroup({
               key={a.allocation_id}
               allocation={a}
               auth={authMap.get(a.auth_id)}
-              onStatusChange={onStatusChange}
               onDelete={onDelete}
               onUnitsChange={onUnitsChange}
             />
@@ -163,7 +134,6 @@ export function AllocationsTable({
   allocations,
   lines,
   auths,
-  onStatusChange,
   onDelete,
   onUnitsChange,
 }: Props) {
@@ -202,7 +172,6 @@ export function AllocationsTable({
             line={line}
             allocations={lineAllocs}
             auths={auths}
-            onStatusChange={onStatusChange}
             onDelete={onDelete}
             onUnitsChange={onUnitsChange}
           />
