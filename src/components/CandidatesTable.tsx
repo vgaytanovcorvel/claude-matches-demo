@@ -79,7 +79,7 @@ function CandidateRow({
             }}
           />
         ) : (
-          <span style={{ color: "#666" }}>{hasAllocation ? <><span className="pinned-badge">pinned</span> {allocatedUnits}</> : "0"}</span>
+          <span style={{ color: "#666" }}>{hasAllocation ? <><span className="pinned-icon" title="Allocated">&#x1F4CC;</span> {allocatedUnits}</> : "0"}</span>
         )}
       </td>
       <td>
