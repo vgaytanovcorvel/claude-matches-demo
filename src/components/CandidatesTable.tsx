@@ -48,7 +48,7 @@ function CandidateRow({
     !hasAllocation && maxUnits > 0 && units > 0 && units <= maxUnits;
 
   return (
-    <tr className={`candidate-row${candidate.composite_score < 0.5 ? " low-confidence" : ""}`}>
+    <tr className={`candidate-row${candidate.composite_score < 0.6 ? " low-confidence" : ""}`}>
       <td>
         <ScoreCell score={candidate.composite_score} vector={candidate.vector} />
       </td>
@@ -179,7 +179,7 @@ function LineGroup({
             </tr>
           </thead>
           <tbody>
-            {candidates.filter((c) => !hideLC || c.composite_score >= 0.5).map((c) => {
+            {candidates.filter((c) => !hideLC || c.composite_score >= 0.6).map((c) => {
               const treatment = treatmentMap.get(c.treatment_id);
               if (!treatment) return null;
               return (
@@ -233,7 +233,7 @@ export function CandidatesTable({
             checked={showLC}
             onChange={(e) => setShowLC(e.target.checked)}
           />
-          Show low-confidence matches (&lt;0.500)
+          Show low-confidence matches (&lt;0.600)
         </label>
       </div>
       {lines.map((line) => {

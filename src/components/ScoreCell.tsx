@@ -1,9 +1,21 @@
 function scoreClass(val: number): string {
-  return val >= 0.999 ? "score-perfect" : val >= 0.5 ? "score-mid" : "score-low";
+  return val >= 0.999
+    ? "score-perfect"
+    : val >= 0.9
+    ? "score-high"
+    : val >= 0.6
+    ? "score-mid"
+    : "score-low";
 }
 
 function scoreBarColor(val: number): string {
-  return val >= 0.999 ? "#4A7A5B" : val >= 0.5 ? "#A68D52" : "#B25555";
+  return val >= 0.999
+    ? "#10B981"
+    : val >= 0.9
+    ? "#22C55E"
+    : val >= 0.6
+    ? "#F59E0B"
+    : "#EF4444";
 }
 
 function vectorTooltip(vector: Record<string, number>): string {
@@ -19,7 +31,7 @@ function vectorTooltip(vector: Record<string, number>): string {
 }
 
 export function ScoreCell({ score, vector }: { score: number; vector?: Record<string, number> }) {
-  const tooltip = score < 0.5 && vector ? vectorTooltip(vector) : undefined;
+  const tooltip = score < 0.6 && vector ? vectorTooltip(vector) : undefined;
   return (
     <span className={`score ${scoreClass(score)}`} title={tooltip}>
       {score.toFixed(3)}

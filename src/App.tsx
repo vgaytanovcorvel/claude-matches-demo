@@ -71,7 +71,7 @@ function App() {
 
   const lowConfidenceAllocCount = useMemo(() => {
     const lcIds = new Set(
-      candidates.filter((c) => c.composite_score < 0.5).map((c) => c.candidate_id)
+      candidates.filter((c) => c.composite_score < 0.6).map((c) => c.candidate_id)
     );
     return allocations.filter((a) => lcIds.has(a.candidate_id)).length;
   }, [allocations, candidates]);

@@ -47,7 +47,7 @@
   font-size: 0.75rem;
 }
 .badge-flagged {
-  background: #B25555;
+  background: #EF4444;
 }
 
 /* Tables */
@@ -83,12 +83,13 @@ tr:hover {
 /* Score styling */
 .score {
   font-family: monospace;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.score-perfect { color: #4A7A5B; }  /* ≥0.999 — forest green */
-.score-mid     { color: #A68D52; }  /* ≥0.5   — muted gold */
-.score-low     { color: #B25555; }  /* <0.5   — brick red */
+.score-perfect { color: #10B981; }  /* 1.000       — vibrant emerald */
+.score-high    { color: #22C55E; }  /* ≥0.9        — bright green */
+.score-mid     { color: #F59E0B; }  /* ≥0.6        — saturated amber */
+.score-low     { color: #EF4444; }  /* <0.6        — crisp crimson */
 
 /* Status badges */
 .status {
@@ -329,7 +330,7 @@ tr:hover {
 }
 
 .candidate-row.low-confidence {
-  background: rgba(178, 85, 85, 0.1);
+  background: rgba(239, 68, 68, 0.08);
 }
 
 .candidates-filter-bar {
@@ -487,5 +488,6 @@ input[type="date"].edit-input {
   .pinned-badge { background: #dbeafe; color: #2563eb; }
   .treatment-card-header:hover { background: #f5f5f5; }
   .alloc-summary-row td { border-top-color: #e0e0e0; }
+  .candidate-row { background: #fff; color: #111; }
   .candidate-row.low-confidence { background: #FFF5F5; }
 }
