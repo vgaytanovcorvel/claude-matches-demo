@@ -1,15 +1,37 @@
-export function ScoreCell({ score }: { score: number }) {
-  const cls =
-    score >= 0.8 ? "score-high" : score >= 0.5 ? "score-mid" : "score-low";
-  return <span className={`score ${cls}`}>{score.toFixed(3)}</span>;
+function scoreClass(val: number): string {
+  return val >= 0.999 ? "score-perfect" : val >= 0.5 ? "score-mid" : "score-low";
+}
+
+function scoreBarColor(val: number): string {
+  return val >= 0.999 ? "#4A7A5B" : val >= 0.5 ? "#A68D52" : "#B25555";
+}
+
+function vectorTooltip(vector: Record<string, number>): string {
+  const values = Object.values(vector);
+  const avg = values.reduce((a, b) => a + b, 0) / values.length;
+  const pct = Math.round(avg * 100);
+  const parts = Object.entries(vector).map(([key, val]) => {
+    if (val >= 0.999) return `${key} is identical`;
+    if (val >= 0.5) return `${key} is close but not perfect`;
+    return `${key} is a weak match`;
+  });
+  return `${pct}% Match: ${parts.join("; ")}.`;
+}
+
+export function ScoreCell({ score, vector }: { score: number; vector?: Record<string, number> }) {
+  const tooltip = score < 0.5 && vector ? vectorTooltip(vector) : undefined;
+  return (
+    <span className={`score ${scoreClass(score)}`} title={tooltip}>
+      {score.toFixed(3)}
+    </span>
+  );
 }
 
 export function VectorCell({ vector }: { vector: Record<string, number> }) {
   return (
-    <div className="vector-cell">
+    <div className="vector-cell" title={vectorTooltip(vector)}>
       {Object.entries(vector).map(([key, val]) => {
-        const color =
-          val >= 0.8 ? "#4ade80" : val >= 0.5 ? "#facc15" : "#f87171";
+        const color = scoreBarColor(val);
         return (
           <div key={key} className="vector-bar">
             <span className="vector-label">{key}</span>

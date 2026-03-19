@@ -48,9 +48,9 @@ function CandidateRow({
     !hasAllocation && maxUnits > 0 && units > 0 && units <= maxUnits;
 
   return (
-    <tr className="candidate-row">
+    <tr className={`candidate-row${candidate.composite_score < 0.5 ? " low-confidence" : ""}`}>
       <td>
-        <ScoreCell score={candidate.composite_score} />
+        <ScoreCell score={candidate.composite_score} vector={candidate.vector} />
       </td>
       <td>
         <VectorCell vector={candidate.vector} />
@@ -119,6 +119,7 @@ function LineGroup({
   treatmentRemaining,
   onAllocate,
   onDeleteAllocation,
+  hideLC,
 }: {
   line: ChargeLine;
   candidates: MatchCandidate[];
@@ -128,6 +129,7 @@ function LineGroup({
   treatmentRemaining: (treatmentId: string) => number;
   onAllocate: (candidate: MatchCandidate, units: number) => void;
   onDeleteAllocation: (allocationId: string) => void;
+  hideLC: boolean;
 }) {
   const [expanded, setExpanded] = useState(true);
   const allocMap = useMemo(() => {
@@ -177,7 +179,7 @@ function LineGroup({
             </tr>
           </thead>
           <tbody>
-            {candidates.map((c) => {
+            {candidates.filter((c) => !hideLC || c.composite_score >= 0.5).map((c) => {
               const treatment = treatmentMap.get(c.treatment_id);
               if (!treatment) return null;
               return (
@@ -210,6 +212,8 @@ export function CandidatesTable({
   onAllocate,
   onDeleteAllocation,
 }: Props) {
+  const [showLC, setShowLC] = useState(false);
+
   const grouped = useMemo(() => {
     const map = new Map<string, MatchCandidate[]>();
     for (const c of candidates) {
@@ -222,6 +226,16 @@ export function CandidatesTable({
 
   return (
     <div className="candidates-panel">
+      <div className="candidates-filter-bar">
+        <label>
+          <input
+            type="checkbox"
+            checked={showLC}
+            onChange={(e) => setShowLC(e.target.checked)}
+          />
+          Show low-confidence matches (&lt;0.500)
+        </label>
+      </div>
       {lines.map((line) => {
         const lineCandidates = grouped.get(line.line_id) ?? [];
         return (
@@ -235,6 +249,7 @@ export function CandidatesTable({
             treatmentRemaining={treatmentRemaining}
             onAllocate={onAllocate}
             onDeleteAllocation={onDeleteAllocation}
+            hideLC={!showLC}
           />
         );
       })}

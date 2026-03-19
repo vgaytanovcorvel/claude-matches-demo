@@ -69,6 +69,13 @@ function App() {
     [lines, treatments]
   );
 
+  const lowConfidenceAllocCount = useMemo(() => {
+    const lcIds = new Set(
+      candidates.filter((c) => c.composite_score < 0.5).map((c) => c.candidate_id)
+    );
+    return allocations.filter((a) => lcIds.has(a.candidate_id)).length;
+  }, [allocations, candidates]);
+
   const lineRemaining = useCallback(
     (lineId: string) => {
       const line = lines.find((l) => l.line_id === lineId);
@@ -140,6 +147,9 @@ function App() {
             {t.label}
             {t.key === "allocations" && allocations.length > 0 && (
               <span className="badge">{allocations.length}</span>
+            )}
+            {t.key === "allocations" && lowConfidenceAllocCount > 0 && (
+              <span className="badge badge-flagged">{lowConfidenceAllocCount} flagged</span>
             )}
           </button>
         ))}
