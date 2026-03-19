@@ -160,6 +160,7 @@ function App() {
             lineRemaining={lineRemaining}
             treatmentRemaining={treatmentRemaining}
             onAllocate={handleAllocate}
+            onDeleteAllocation={handleDelete}
           />
         )}
         {activeTab === "allocations" && (

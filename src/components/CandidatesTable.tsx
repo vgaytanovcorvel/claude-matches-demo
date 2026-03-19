@@ -15,6 +15,7 @@ interface Props {
   lineRemaining: (lineId: string) => number;
   treatmentRemaining: (treatmentId: string) => number;
   onAllocate: (candidate: MatchCandidate, units: number) => void;
+  onDeleteAllocation: (allocationId: string) => void;
 }
 
 function CandidateRow({
@@ -22,17 +23,20 @@ function CandidateRow({
   treatment,
   lineAvail,
   treatmentAvail,
-  allocatedUnits,
+  allocation,
   onAllocate,
+  onDeleteAllocation,
 }: {
   candidate: MatchCandidate;
   treatment: Treatment;
   lineAvail: number;
   treatmentAvail: number;
-  allocatedUnits: number | null;
+  allocation: Allocation | null;
   onAllocate: (candidate: MatchCandidate, units: number) => void;
+  onDeleteAllocation: (allocationId: string) => void;
 }) {
-  const hasAllocation = allocatedUnits !== null;
+  const hasAllocation = allocation !== null;
+  const allocatedUnits = allocation?.units_allocated ?? null;
   const maxUnits = Math.min(lineAvail, treatmentAvail);
   const [units, setUnits] = useState(maxUnits);
 
@@ -92,7 +96,15 @@ function CandidateRow({
         </button>
       </td>
       <td>
-        {hasAllocation && <span className="pinned-icon" title="Allocated">&#x1F4CC;</span>}
+        {hasAllocation && (
+          <button
+            className="pinned-icon btn-icon"
+            title="Remove allocation"
+            onClick={() => onDeleteAllocation(allocation!.allocation_id)}
+          >
+            &#x1F4CC;
+          </button>
+        )}
       </td>
     </tr>
   );
@@ -106,6 +118,7 @@ function LineGroup({
   lineRemaining,
   treatmentRemaining,
   onAllocate,
+  onDeleteAllocation,
 }: {
   line: ChargeLine;
   candidates: MatchCandidate[];
@@ -114,11 +127,12 @@ function LineGroup({
   lineRemaining: (lineId: string) => number;
   treatmentRemaining: (treatmentId: string) => number;
   onAllocate: (candidate: MatchCandidate, units: number) => void;
+  onDeleteAllocation: (allocationId: string) => void;
 }) {
   const [expanded, setExpanded] = useState(true);
   const allocMap = useMemo(() => {
-    const m = new Map<string, number>();
-    for (const a of allocations) m.set(a.candidate_id, a.units_allocated);
+    const m = new Map<string, Allocation>();
+    for (const a of allocations) m.set(a.candidate_id, a);
     return m;
   }, [allocations]);
   const treatmentMap = useMemo(() => {
@@ -173,8 +187,9 @@ function LineGroup({
                   treatment={treatment}
                   lineAvail={lineAvail}
                   treatmentAvail={treatmentRemaining(c.treatment_id)}
-                  allocatedUnits={allocMap.get(c.candidate_id) ?? null}
+                  allocation={allocMap.get(c.candidate_id) ?? null}
                   onAllocate={onAllocate}
+                  onDeleteAllocation={onDeleteAllocation}
                 />
               );
             })}
@@ -193,6 +208,7 @@ export function CandidatesTable({
   lineRemaining,
   treatmentRemaining,
   onAllocate,
+  onDeleteAllocation,
 }: Props) {
   const grouped = useMemo(() => {
     const map = new Map<string, MatchCandidate[]>();
@@ -218,6 +234,7 @@ export function CandidatesTable({
             lineRemaining={lineRemaining}
             treatmentRemaining={treatmentRemaining}
             onAllocate={onAllocate}
+            onDeleteAllocation={onDeleteAllocation}
           />
         );
       })}
