@@ -182,7 +182,7 @@ function LineGroup({
               if (!treatment) return null;
               return (
                 <CandidateRow
-                  key={c.candidate_id}
+                  key={`${c.candidate_id}-${allocMap.has(c.candidate_id)}`}
                   candidate={c}
                   treatment={treatment}
                   lineAvail={lineAvail}
